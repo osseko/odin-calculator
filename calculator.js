@@ -1,66 +1,77 @@
 const calcBtn = document.querySelectorAll("button");
 const numShow = document.getElementsByClassName("numPad");
-    const numArr = Array.from(numShow);
+    const numArr = Array.from(numShow); //formed array for 'foreach' loop method
 const oprShow = document.getElementsByClassName("operation");
     const oprArr = Array.from(oprShow);
 const result = document.getElementById("result");
-const showNum = document.getElementById("showNum");
+const showNum = document.getElementById("showNum");//input box
     const inputShow = showNum.value;
         
 
-const factor = document.createElement("li");
+const factor = document.querySelector("ul");
 
     
 
 const numberUp = numArr.forEach((buttons) => {
 
-    const numInput = document.createElement("factor")
+    
         buttons.addEventListener("click", () =>{
         
         const numDown = buttons.value
 
-        showNum.value += numDown;
-        
-        console.log("number")
-        console.log("numDown", numDown);
+        showNum.value += numDown; // input value === button value
+
             
-    } )
+            } )
     
     
 })
 
-// innertext to stored input to array
-// appendchild to store number input?
-
+// input stored after click
+    userInput = [];
+//stores input into array,
 const operationUp = oprArr.forEach((buttons) => {
     
     buttons.addEventListener("click", () =>{
-
-          
-
+         const inputReset = document.querySelector("input");
+        console.log(showNum.value);
+        userInput += showNum.value;
+               
+        console.log(userInput)
+        // const numPlace = document.createElement("li"); 
+        //     factor.appendChild(numPlace);
+               
         const operPressed = buttons.value;
-        
-     
-        console.log(operPressed)
-        
+             
         switch(operPressed){
             case "add":
+                inputReset.value = "";
+                
                 console.log(sum(2, 2));
                 break;
             case "subtract":
+                inputReset.value = "";
+                
                 console.log(subt(2,2));
                 break;
             case "multiply":
+                inputReset.value = "";
+                
                 console.log(mult(2,3));
                 break;
             case "divide":
+                inputReset.value = "";
+                
                 console.log(dvde(10, 2));
                 break;
             case "clear":
-                console.log("clear");
+               
+                    inputReset.value = "";
+                
+                console.log("nptClr", document.querySelector("input").value);
                 break;
         }
-
+        console.log("operPressed", operPressed)
 
     } )
     
@@ -84,5 +95,3 @@ const mult = function multiply(a, b){
     return a*b;
 };
 
-//create array from input(button press)
-//if operation is pressed break += 
