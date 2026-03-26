@@ -3,7 +3,8 @@ const numShow = document.getElementsByClassName("numPad");
     const numArr = Array.from(numShow); //formed array for 'foreach' loop method
 const oprShow = document.getElementsByClassName("operation");
     const oprArr = Array.from(oprShow);
-const result = document.getElementById("result");
+const oprPrss = document.getElementById("oprPrss");
+    const signPushed = oprPrss.value;
 const showNum = document.getElementById("showNum");//input box
     const inputShow = showNum.value;
     
@@ -18,69 +19,95 @@ const showNum = document.getElementById("showNum");//input box
 // problem with empty array pushed,, do not push if empty; if arr==='' no push
 // 
 
+// reset shownum value after operation.
+storedInput = [];
+storedOperation = [];
+let compute;
 
-const numberUp = numArr.forEach((buttons) => {
-    
-        
+const numberUp = numArr.forEach((buttons) => {    
 
-    buttons.addEventListener("click", () =>{
-        
-        const numDown = buttons.value;
+    buttons.addEventListener("click", () => {
+       const numDown = buttons.value;
+        if(compute){
+            console.log("whoosh")
+            showNum.value = "";
+            compute = null;
+        }
+                    
         showNum.value += numDown;
 
     })
     
 })
 
-storedInput = [];
-let storedOperation;
-
+//storedinput[0], to refresh shownum.value;
 const operPressed = oprArr.forEach((buttons) => {
 
-        const oprDown = buttons.value;
+        const oprDown = buttons.value;   
         
     buttons.addEventListener("click", () => {
-       
-        console.log(showNum.value)
+        storedOperation.push(oprDown);
+        oprPrss.value = oprDown;
+     
         if(showNum.value === ''){
             console.log("dont push")
         } else {
             storedInput.push(parseInt(showNum.value))
         }
-        
-            console.log(storedInput)
+
+            console.log(storedInput, "stored")
         showNum.value = []
-        if(storedInput.length === 2){
-            // let a = storedInput[0];
-            // let b = storedInput[1];
+        if(storedInput.length >= 2){
+            let a = storedInput[0];
+            let b = storedInput[1];
+             
 
-           //console.log(storedInput.reduce((a, b) => a+b), "reduce");
-            const compResult = storedInput.push(calculon(storedInput[0], storedInput[1]));
+           if(storedOperation[0] === "add"){
+            console.log(a+b)
+            storedInput.push(a+b);
+            compute = (a+b);
+           } else if (storedOperation[0] === "subtract"){
+            console.log(a+(-b));
+            storedInput.push(a-b);
+            compute = (a-b);
+           } else if (storedOperation[0] === "divide"){
+            console.log(a/b);
+            storedInput.push(a/b);
+            compute = (a/b);
+           } else if (storedOperation[0] === "multiply"){
+            console.log(a*b);
+            storedInput.push(a*b);
+            compute = (a*b);
+           } 
 
-            console.log(calculon(storedInput[0], storedInput[1]), "compResult")
+            showNum.value = compute;
+            storedOperation.splice(0, 2);            
             storedInput.splice(0, 2);
             console.log("remove arr")
-            
+            console.log("compute", compute)
 
-               
+        } 
+
+        if (storedOperation.length > 2){
+            storedOperation.splice(0,1);
         }
-     
 
+        console.log("length", storedInput.length, "arr", storedInput)
             //function operation return arr.push[0]
 
-            function calculon(a, b){
+            // function calculon(a, b){
 
-               if(oprDown === "add"){
-                return a + b;
-               } else if(oprDown === "subtract"){
-                return a +(-b);
-               } else if(oprDown === "multiply"){
-                return a * b;
-               } else if(oprDown === "divide"){
-                return a / b;
-               }
+            //    if(oprDown === "add"){
+            //     return a + b;
+            //    } else if(oprDown === "subtract"){
+            //     return a +(-b);
+            //    } else if(oprDown === "multiply"){
+            //     return a * b;
+            //    } else if(oprDown === "divide"){
+            //     return a / b;
+            //    }
                 
-            }
+            // }
                                
             //     switch(oprDown){
             //     case "add":   
