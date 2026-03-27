@@ -3,60 +3,87 @@ const numShow = document.getElementsByClassName("numPad");
     const numArr = Array.from(numShow); //formed array for 'foreach' loop method
 const oprShow = document.getElementsByClassName("operation");
     const oprArr = Array.from(oprShow);
-const oprPrss = document.getElementById("oprPrss");
-    const signPushed = oprPrss.value;
+// const oprPrss = document.getElementById("oprPrss");
+//     const signPushed = oprPrss.value;
 const showNum = document.getElementById("showNum");//input box
     const inputShow = showNum.value;
     
-//function calcOperation(a, b)
-//different loop for input 1 and input 2
-// directly reference array[0] and array[1] for compute function
-//store operation after first array, then compute after array[1]
-//result will be new array[0]
-//if arr.length===2; function (arr[0], operPressed, arr[1])
-// parseInt[arr[0, 1]]
-// return [0] operPressed [1]
-// problem with empty array pushed,, do not push if empty; if arr==='' no push
-// 
+            //press decimal dot once // backspace // clear
+                function disableDot(){
+                    document.getElementById("dot").disabled = true;
+                }
 
-// reset shownum value after operation.
+                function enableDot(){
+                    document.getElementById("dot").disabled = false;
+                }
+
+                function bckSpace(){
+                    userInput = showNum.value;
+                    showNum.value = showNum.value.substring(0, showNum.value.length -1);
+                    console.log(userInput, "backspace")
+                }
+
+                function clearInput(){
+                    storedInput=[];
+                    storedOperation=[];
+                    showNum.value = '';
+                    console.log("input", storedInput, "opr", storedOperation)
+                }
+
+window.addEventListener("keydown", () => {
+    console.log(event.key)
+    showNum.value += event.key;
+})
+
+
+//keyboard button press to trigger button.id
+                
 storedInput = [];
 storedOperation = [];
 let compute;
-
+//returns number/numpad input
 const numberUp = numArr.forEach((buttons) => {    
 
     buttons.addEventListener("click", () => {
-       const numDown = buttons.value;
+       const numDown = buttons.value;       
+       
         if(compute){
             console.log("whoosh")
             showNum.value = "";
             compute = null;
         }
-                    
+        
         showNum.value += numDown;
 
+        // function clicked(){
+        //     return `${numDown} is clicked`
+        // }
+        // console.log(clicked());
+       
     })
     
 })
-
-//storedinput[0], to refresh shownum.value;
+//returns operation input / returns computation
 const operPressed = oprArr.forEach((buttons) => {
 
         const oprDown = buttons.value;   
         
     buttons.addEventListener("click", () => {
+        
         storedOperation.push(oprDown);
-        oprPrss.value = oprDown;
+        
+        
+        // oprPrss.value = oprDown;
      
         if(showNum.value === ''){
             console.log("dont push")
         } else {
-            storedInput.push(parseInt(showNum.value))
+            storedInput.push(parseFloat(showNum.value))
         }
 
             console.log(storedInput, "stored")
         showNum.value = []
+      
         if(storedInput.length >= 2){
             let a = storedInput[0];
             let b = storedInput[1];
@@ -65,25 +92,36 @@ const operPressed = oprArr.forEach((buttons) => {
            if(storedOperation[0] === "add"){
             console.log(a+b)
             storedInput.push(a+b);
-            compute = (a+b);
+            compute = (a+b).toFixed(2);
            } else if (storedOperation[0] === "subtract"){
             console.log(a+(-b));
             storedInput.push(a-b);
-            compute = (a-b);
+            compute = (a-b).toFixed(2);
            } else if (storedOperation[0] === "divide"){
             console.log(a/b);
             storedInput.push(a/b);
-            compute = (a/b);
+            compute = (a/b).toFixed(2);
            } else if (storedOperation[0] === "multiply"){
             console.log(a*b);
             storedInput.push(a*b);
-            compute = (a*b);
-           } 
+            compute = (a*b).toFixed(2);
+           } else if(storedOperation[0] === "equals"){
+            storedInput.push(parseFloat(compute));
+           }
+                 
+
+           if(storedOperation[0] === "divide" && b === 0){
+            console.log("vacuum")
+            alert("You've broken the space-time continuum")
+                storedOperation.splice(0, 1);            
+                storedInput.splice(0, 2);
+                compute = "kaboom";
+           }
 
             showNum.value = compute;
-            storedOperation.splice(0, 2);            
+            storedOperation.splice(0, 1);            
             storedInput.splice(0, 2);
-            console.log("remove arr")
+            console.log(storedOperation)
             console.log("compute", compute)
 
         } 
@@ -92,132 +130,13 @@ const operPressed = oprArr.forEach((buttons) => {
             storedOperation.splice(0,1);
         }
 
-        console.log("length", storedInput.length, "arr", storedInput)
-            //function operation return arr.push[0]
-
-            // function calculon(a, b){
-
-            //    if(oprDown === "add"){
-            //     return a + b;
-            //    } else if(oprDown === "subtract"){
-            //     return a +(-b);
-            //    } else if(oprDown === "multiply"){
-            //     return a * b;
-            //    } else if(oprDown === "divide"){
-            //     return a / b;
-            //    }
-                
-            // }
-                               
-            //     switch(oprDown){
-            //     case "add":   
-                  
-            //         storedOperation = "add"  
-                    
-            //         break;
-            //     case "subtract":
-                   
-            //         storedOperation = "subtract"
-                 
-            //         break;
-            //     case "multiply":                                      
-                    
-            //         storedOperation = "multiply"
-                      
-            //         break;
-            //     case "divide":                                   
-                   
-            //         storedOperation = "divide"
-                        
-            //         break;
-            //     case "clear":                                   
-            //         console.log("nptClr");
-            //         break;
-            // }
+        console.log("length", storedInput.length, "arr", storedInput, "opr", storedOperation)
     
-     
 
     })
 
 })
 
-
-// const numberUp = numArr.forEach((buttons) => {
-
-    
-//         buttons.addEventListener("click", () =>{
-        
-//             const numDown = buttons.value
-
-//             showNum.value += parseInt(numDown); // input value === button value
-
-//             console.log(numDown);        
-//         } )
-    
-    
-// })
-
-//if arr.length=2
-//input 1 push input 2
-// arr[0], operation, arr[1] = result push arr
-//arr.length = 3, slice(0, 1)
-
-   
-//stores input into array,
-// const operationUp = oprArr.forEach((buttons) => {
-    
-//     buttons.addEventListener("mousedown", () =>{
-//         console.log(showNum.value)
-//         //  const inputReset = document.querySelector("input");
-        
-//         //  storedInput.push(parseInt(showNum.value));   
-     
-//         // console.log(numberUp, "numberup")         
-
-//         // inputReset.value = "";
-
-//     } )
-
-// // if array.length > 3 
-// // factors go to different array? 
-// // store input 1, operation, store input 2, operation, answer, operation input 3...
-// // returns NaN if no input, array doesn't calculate with NaN
-//     // buttons.addEventListener("mouseup", () =>{
-//     //      const operPressed = buttons.value;
-
-//     //         switch(operPressed){
-//     //             case "add":
-//     //                 const sum = storedInput.reduce((a, b) => a + b);
-                    
-//     //                 console.log("sum", sum);                           
-//     //                 break;
-//     //             case "subtract":
-//     //                 const subt = storedInput.reduce((a, b) => a - b);
-                                       
-//     //                 console.log("subtract", subt);
-//     //                 break;
-//     //             case "multiply":
-//     //                 const mult = storedInput.reduce((a, b) => a * b);
-
-                                        
-//     //                 console.log("mult", mult);
-//     //                 break;
-//     //             case "divide":
-//     //                 const dvde = storedInput.reduce((a, b) => a/b);
-                                        
-//     //                 console.log("dvde", dvde);
-//     //                 break;
-//     //             case "clear":
-//     //                 storedInput = [];
-                                    
-//     //                 console.log("nptClr", document.querySelector("input").value);
-//     //                 break;
-//     //         }
-
-//     // } );
-    
-  
-// })
 
 
 

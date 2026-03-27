@@ -9,10 +9,9 @@
 <body>
     <h1 id="header">Calculator</h1>
 
-    <input id="showNum" type="number" inputmode="decimal"> </input>
-    <!-- <input id="showNum" type="number" inputmode="decimal"> </input> -->
-
-    <input id="oprPrss"></input>
+    <input id="showNum" > </input>
+   
+    <!-- <input id="oprPrss"></input> displays operation pressed -->
     
     <div id="numBed">
         <button class="numPad" id="1" value="1">1</button>
@@ -25,16 +24,17 @@
         <button class="numPad" id="8" value="8">8</button>
         <button class="numPad" id="9" value="9">9</button>
         <button class="numPad" id="0" value="0">0</button>
-        <button class="numPad" id="dot" value=".">.</button>
+        <button class="numPad" id="dot" value="." onclick="disableDot()">.</button>
     </div>
 
     <div id="oprBed">
-        <button class="operation" id="clear" value="clear">clear</button>
-        <button class="operation" id="add" value="add">+</button>
-        <button class="operation" id="subtract" value="subtract">-</button>
-        <button class="operation" id="divide" value="divide">/</button>
-        <button class="operation" id="multiply" value="multiply">*</button>        
-        <button class="operation" id="equals" value="equals">=</button> 
+        <button class="backspace" id="backspace" onclick="bckSpace()">BCKSPCE</button>
+        <button class="clear" id="clear" value="clear" onclick="enableDot(), clearInput()">clear</button>
+        <button class="operation" id="add" value="add" onclick="enableDot()">+</button>
+        <button class="operation" id="subtract" value="subtract"onclick="enableDot()">-</button>
+        <button class="operation" id="divide" value="divide" onclick="enableDot()">/</button>
+        <button class="operation" id="multiply" value="multiply" onclick="enableDot()">*</button>        
+        <button class="operation" id="equals" value="equals" onclick="enableDot()">=</button> 
     </div>  
 
     <script src="calculator.js">
