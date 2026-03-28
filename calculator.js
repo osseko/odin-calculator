@@ -30,17 +30,56 @@ const showNum = document.getElementById("showNum");//input box
                     console.log("input", storedInput, "opr", storedOperation)
                 }
 
-window.addEventListener("keydown", () => {
-    console.log(event.key)
-    showNum.value += event.key;
-})
 
+
+//button listener and event key to trigger shownum value
+// rearrange code calculon(storedInput[0], storedInput[1], storedOperation[0])
 
 //keyboard button press to trigger button.id
                 
 storedInput = [];
 storedOperation = [];
 let compute;
+
+function calculon(a, b, c){
+
+    if(c === "add"){
+        console.log(a+b)
+        storedInput.push(a+b);
+        compute = (a+b).toFixed(2);
+    } else if (c === "subtract"){
+        console.log(a+(-b));
+        storedInput.push(a-b);
+        compute = (a-b).toFixed(2);
+    } else if (c === "divide"){
+        console.log(a/b);
+        storedInput.push(a/b);
+        compute = (a/b).toFixed(2);
+    } else if (c === "multiply"){
+        console.log(a*b);
+        storedInput.push(a*b);
+        compute = (a*b).toFixed(2);
+    } else if(c === "equals"){
+        storedInput.push(parseFloat(compute));
+    }
+                 
+
+    if(c === "divide" && b === 0){
+        console.log("vacuum")
+        alert("You've broken the space-time continuum")
+            storedOperation.splice(0, 1);            
+            storedInput.splice(0, 2);
+            compute = "kaboom";
+    }
+
+        showNum.value = compute;
+        storedOperation.splice(0, 1);            
+        storedInput.splice(0, 2);
+        console.log(storedOperation)
+        console.log("compute", compute)
+
+}// operation function
+
 //returns number/numpad input
 const numberUp = numArr.forEach((buttons) => {    
 
@@ -54,12 +93,7 @@ const numberUp = numArr.forEach((buttons) => {
         }
         
         showNum.value += numDown;
-
-        // function clicked(){
-        //     return `${numDown} is clicked`
-        // }
-        // console.log(clicked());
-       
+      
     })
     
 })
@@ -72,7 +106,6 @@ const operPressed = oprArr.forEach((buttons) => {
         
         storedOperation.push(oprDown);
         
-        
         // oprPrss.value = oprDown;
      
         if(showNum.value === ''){
@@ -81,49 +114,12 @@ const operPressed = oprArr.forEach((buttons) => {
             storedInput.push(parseFloat(showNum.value))
         }
 
-            console.log(storedInput, "stored")
-        showNum.value = []
+        showNum.value = []// resets input box after pushing storedInput
       
         if(storedInput.length >= 2){
-            let a = storedInput[0];
-            let b = storedInput[1];
-             
-
-           if(storedOperation[0] === "add"){
-            console.log(a+b)
-            storedInput.push(a+b);
-            compute = (a+b).toFixed(2);
-           } else if (storedOperation[0] === "subtract"){
-            console.log(a+(-b));
-            storedInput.push(a-b);
-            compute = (a-b).toFixed(2);
-           } else if (storedOperation[0] === "divide"){
-            console.log(a/b);
-            storedInput.push(a/b);
-            compute = (a/b).toFixed(2);
-           } else if (storedOperation[0] === "multiply"){
-            console.log(a*b);
-            storedInput.push(a*b);
-            compute = (a*b).toFixed(2);
-           } else if(storedOperation[0] === "equals"){
-            storedInput.push(parseFloat(compute));
-           }
-                 
-
-           if(storedOperation[0] === "divide" && b === 0){
-            console.log("vacuum")
-            alert("You've broken the space-time continuum")
-                storedOperation.splice(0, 1);            
-                storedInput.splice(0, 2);
-                compute = "kaboom";
-           }
-
-            showNum.value = compute;
-            storedOperation.splice(0, 1);            
-            storedInput.splice(0, 2);
-            console.log(storedOperation)
-            console.log("compute", compute)
-
+        // code bulk rearranged to calculon()  
+            calculon(storedInput[0], storedInput[1], storedOperation[0])
+       
         } 
 
         if (storedOperation.length > 2){
@@ -131,11 +127,74 @@ const operPressed = oprArr.forEach((buttons) => {
         }
 
         console.log("length", storedInput.length, "arr", storedInput, "opr", storedOperation)
-    
-
+        
     })
 
 })
+
+
+window.addEventListener("keydown", () => {
+    let keybLocation = event.location;
+    let keybInput = event.key
+    // no 'enter' key yet
+    //key location = 3, numpad
+    if(keybInput >= 0 && keybInput <=9 || keybInput === "."){
+
+        if(compute){
+            console.log("whoosh")
+            showNum.value = "";
+            compute = null;
+        }
+        showNum.value += keybInput
+    }
+
+    if(keybInput === '+' || keybInput === '-' || keybInput === '*' || keybInput === '/' || keybInput === "Enter"){
+
+        if(showNum.value === ''){
+            console.log("dont push")
+        } else {
+            storedInput.push(parseFloat(showNum.value))
+        }
+            showNum.value = []
+    
+        let keybOperation; 
+            switch (keybInput){
+                case "+":
+                    keybOperation = "add"
+                    break;
+                case "-":
+                    keybOperation = "subtract"
+                    break;
+                case "*":
+                    keybOperation = "multiply"
+                    break;
+                case "/":
+                    keybOperation = "divide"
+                    break;
+                case "Enter":
+                    keybOperation = "equals"
+                    break;
+            }
+        storedOperation.push(keybOperation);
+
+
+        if(storedInput.length >= 2){
+        // code bulk rearranged to calculon()  
+            calculon(storedInput[0], storedInput[1], storedOperation[0])
+       
+        } 
+
+        if (storedOperation.length > 2){
+            storedOperation.splice(0,1);
+        }
+
+       console.log("Klength", storedInput.length, "Karr", storedInput, "Kopr", storedOperation)
+            
+    }
+    
+    
+})
+
 
 
 
