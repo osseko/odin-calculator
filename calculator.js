@@ -41,6 +41,7 @@ storedInput = [];
 storedOperation = [];
 let compute;
 
+//operation function
 function calculon(a, b, c){
 
     if(c === "add"){
@@ -61,6 +62,7 @@ function calculon(a, b, c){
         compute = (a*b).toFixed(2);
     } else if(c === "equals"){
         storedInput.push(parseFloat(compute));
+        storedOperation.splice(0,2);
     }
                  
 
@@ -78,16 +80,23 @@ function calculon(a, b, c){
         console.log(storedOperation)
         console.log("compute", compute)
 
-}// operation function
+}
 
 //returns number/numpad input
 const numberUp = numArr.forEach((buttons) => {    
 
     buttons.addEventListener("click", () => {
        const numDown = buttons.value;       
-       
+        
+        if(storedOperation[0] === "equals"){
+            console.log("whoosh", storedInput)
+            showNum.value = "";
+            storedInput.splice(0, 2);
+            storedOperation.splice(0, 1);
+        }
+
         if(compute){
-            console.log("whoosh")
+            console.log("whoosh", storedInput)
             showNum.value = "";
             compute = null;
         }
@@ -132,13 +141,20 @@ const operPressed = oprArr.forEach((buttons) => {
 
 })
 
-
+// keyboard numpad input
 window.addEventListener("keydown", () => {
     let keybLocation = event.location;
     let keybInput = event.key
-    // no 'enter' key yet
+
     //key location = 3, numpad
     if(keybInput >= 0 && keybInput <=9 || keybInput === "."){
+
+        if(storedOperation[0] === "equals"){
+            console.log("whoosh", storedInput)
+            showNum.value = "";
+            storedInput.splice(0, 2);
+            storedOperation.splice(0, 1);
+        }
 
         if(compute){
             console.log("whoosh")
